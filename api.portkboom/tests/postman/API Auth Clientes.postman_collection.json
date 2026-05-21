@@ -1,0 +1,103 @@
+{
+	"info": {
+		"name": "Auth Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "clientes/cadastro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Emrpesa TESTE EEmpresinha\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{senha}}\",\r\n    \"password_confirmation\": \"{{senha}}\",\r\n    \"tipo_pessoa\": \"{{pessoa}}\", //{{pessoa}}\r\n    \"cpf_cnpj\": \"{{cnpj}}\", // {{cnpj}} {{cpf}}\r\n    \"telefone\": \"{{telefone}}\", \r\n    \"inscricao_estadual\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url_api}}/auth/clientes/cadastro",
+					"host": [
+						"{{base_url_api}}"
+					],
+					"path": [
+						"auth",
+						"clientes",
+						"cadastro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "clientes/login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"{{cnpj}}\", // {{cpf}} {{email}} {{cnpj}} \r\n    \"password\": \"{{senha}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url_api}}/auth/clientes/login",
+					"host": [
+						"{{base_url_api}}"
+					],
+					"path": [
+						"auth",
+						"clientes",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "clientes/sair",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base_url_api}}/auth/clientes/sair",
+					"host": [
+						"{{base_url_api}}"
+					],
+					"path": [
+						"auth",
+						"clientes",
+						"sair"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

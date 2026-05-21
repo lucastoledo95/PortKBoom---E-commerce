@@ -1,0 +1,44 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: api_portkboom
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  laravel:
+    build:
+      context: ./api.portkboom
+    volumes:
+      - ./api.portkboom:/var/www/html
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./api.portkboom:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - laravel
+
+  angular:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./angular-front:/app
+    ports:
+      - "4200:4200"
+    command: sh -c "npm install --legacy-peer-deps && npx ng serve --host 0.0.0.0 --port 4200 --poll 2000"
+
+volumes:
+  mysql-data:
