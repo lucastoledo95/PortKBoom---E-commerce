@@ -192,12 +192,13 @@ DB_PASSWORD=laravel
 
 SESSION_DOMAIN=.localhost
 SANCTUM_STATEFUL_DOMAINS=localhost,api.localhost
-```
 
-> Importante: `DB_HOST` deve ser `mysql` (nome do container) e não `127.0.0.1`.
 KEY_CRIPTOGRAFIA="QvvgI51pzrjIAV7DEI7vtYBDM9W38GjA" # KEY CRIPTOGRAFADA EM BASE64 PARA ENC.PHP -- exemplo
 PROFILE_PHOTO_DEFAULT="logos/logo-profile.png" #  LOGO DA URL DEFAULT PROFILE
 RECAPTCHA_SECRET_KEY=""
+```
+
+> Importante: `DB_HOST` deve ser `mysql` (nome do container) e não `127.0.0.1`.
 
 ---
 
