@@ -8,8 +8,7 @@
 ## Inicio Rapido
 
 # 1. Clone o repositorio
-git clone https://github.com/seu-usuario/portkboom.git
-cd portkboom
+git clone https://github.com/lucastoledo95/PortKBoom---E-commerce
 
 # 2. Rode o ambiente
 docker-compose up
@@ -81,19 +80,12 @@ Usuario    root
 Senha      root
 Database   api_portkboom
 
-### Importar backup
-
-Get-Content BACKUP.sql | docker-compose exec -T mysql mysql -u laravel -plaravel api_portkboom
-
-### Exportar backup
-
-docker-compose exec -T mysql mysqldump -u root -proot api_portkboom > BACKUP.sql
 
 ## Certificado SSL
 
 O projeto usa certificado autoassinado gerado automaticamente no build do nginx.
 
-Para instalar no Windows (evitar avisos do navegador):
+Para instalar no Windows (evitar avisos do navegador e problemas de cookies):
 
 docker cp projeto_e-commerce-nginx-1:/etc/nginx/ssl/server.crt ssl/server.crt
 certutil -delstore "Root" "localhost"
@@ -131,18 +123,6 @@ Adicione em C:\Windows\System32\drivers\etc\hosts:
 
 127.0.0.1 api.localhost
 
-## Troubleshooting
-
-### Erro de porta ocupada
-
-# Verificar o que esta usando a porta
-netstat -ano | findstr :80
-netstat -ano | findstr :3306
-
-### CORS bloqueando requisicoes
-
-Configurar config/cors.php do Laravel com os dominios corretos:
-'allowed_origins' => ['https://localhost', 'https://api.localhost'],
 
 ### Rebuild completo
 
