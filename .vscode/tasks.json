@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Docker: Logs",
+            "type": "shell",
+            "command": "docker-compose logs -f",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "group": "docker"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Laravel Bash",
+            "type": "shell",
+            "command": "docker-compose exec laravel bash",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "group": "laravel"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Angular Bash",
+            "type": "shell",
+            "command": "docker-compose exec angular sh",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "group": "angular"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Up",
+            "type": "shell",
+            "command": "docker-compose up",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "group": "docker"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ]
+}

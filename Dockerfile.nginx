@@ -1,0 +1,5 @@
+﻿FROM nginx:alpine
+
+RUN apk update && apk add openssl
+
+RUN mkdir -p /etc/nginx/ssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,DNS:api.localhost,IP:127.0.0.1"

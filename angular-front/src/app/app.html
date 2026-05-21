@@ -1,0 +1,23 @@
+@if (manut.isAtivo()) {
+<app-manutencao></app-manutencao>
+} @else {
+
+
+<app-notification></app-notification>
+
+<section>
+  <app-navbar></app-navbar>
+</section>
+
+
+<section>
+  <router-outlet></router-outlet>
+</section>
+
+<section>
+  <app-footer></app-footer>
+</section>
+
+
+
+}
