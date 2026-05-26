@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoriaController;
+use App\Http\Controllers\API\ProdutoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,7 @@ Route::prefix('auth/clientes')->name('auth.clientes.')
     Route::post('cadastro', 'register')->name('cadastro')->middleware('throttle:6,1');
     Route::post('login', 'login')->name('login')->middleware('throttle:5,1');
     // Route::post('sair', 'logout')->name('sair')->middleware(['auth:sanctum', 'throttle:5,1']);
-    Route::post('refresh-token', 'refreshToken')->name('refreshToken');
+    Route::post('refresh-token', 'refreshToken')->name('refreshToken')->middleware('throttle:10,1');
 
     // redefinir senha
     // minha conta
@@ -39,4 +40,15 @@ Route::prefix('categoria')->name('categoria.')
 ->controller(CategoriaController::class)->group(function () {
     Route::get('', 'index')->name('index');
     Route::get('{slug}', [CategoriaController::class, 'getPorSlug'])->where('slug', '.*');
+});
+
+Route::prefix('produto')->name('produto.')
+->controller(ProdutoController::class)->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::get('{slug}', 'show')->name('show');
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('', 'store')->name('store');
+        Route::put('{id}', 'update')->name('update');
+        Route::delete('{id}', 'destroy')->name('destroy');
+    });
 });

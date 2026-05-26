@@ -9,8 +9,8 @@
         'bg-blue-500': n.type === 'info'
       }"
     >
-      @if (n.html) { <!-- verificação se a notificação recebeu html editado-->
-      <span [innerHTML]="n.message"></span>
+      @if (n.html) {
+      <span [innerHTML]="n.safeMessage"></span>
       } @else {
       <span>{{ n.message }}</span>
       }

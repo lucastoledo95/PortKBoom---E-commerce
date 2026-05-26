@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, map, catchError, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { RedirectLogin } from './redirectLogin';
+import { environment } from '../../environments/environment';
 
 export interface LoginDados {
   login: string;
@@ -69,8 +70,8 @@ export class ApiMaster {
     'Dashboard': '/minha-conta',
   };
 
-  apiUrl = 'https://api.localhost/api';
-  urlBase = 'https://api.localhost/';
+  apiUrl = environment.apiUrl;
+  urlBase = environment.urlBase;
 
 
   logoUrl = `${this.urlBase}/storage/logos/logo.png`;

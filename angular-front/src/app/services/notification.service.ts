@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type NotificationType = 'success' | 'error' | 'info';
 
@@ -6,6 +7,7 @@ export interface Notification {
   id: number;
   type: NotificationType;
   message: string;
+  safeMessage?: SafeHtml;
   timeout?: number;
   html?: boolean;
 }
@@ -13,18 +15,28 @@ export interface Notification {
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
   private counter = 0;
+  private sanitizer = inject(DomSanitizer);
   readonly notifications = signal<Notification[]>([]);
 
-  private add(type: NotificationType, message: string, timeout = 5000,options?: { html?: boolean }) {
+  private sanitizeHtml(html: string): SafeHtml {
+    const allowed = html
+      .replace(/<(?!br\s*\/?|b>|\/b>|strong>|\/strong>|i>|\/i>|em>|\/em>)[^>]+>/gi, '')
+      .replace(/on\w+="[^"]*"/gi, '')
+      .replace(/on\w+='[^']*'/gi, '')
+      .replace(/javascript:/gi, '');
+    return this.sanitizer.bypassSecurityTrustHtml(allowed);
+  }
+
+  private add(type: NotificationType, message: string, timeout = 5000, options?: { html?: boolean }) {
     const id = this.counter++;
 
-    const noti: Notification = { 
-      id, type, message, timeout , html: options?.html ?? false
+    const noti: Notification = {
+      id, type, message, timeout, html: options?.html ?? false,
+      safeMessage: options?.html ? this.sanitizeHtml(message) : undefined
     };
 
     this.notifications.update(n => [...n, noti]);
 
-    // Remove após 5000 milissegundos = 5 segundos
     setTimeout(() => this.remove(id), timeout);
   }
 

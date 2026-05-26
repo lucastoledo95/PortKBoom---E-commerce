@@ -14,8 +14,6 @@ use Illuminate\Validation\Rules\Password;
 use App\Http\Controllers\Controller as Controller;
 use Illuminate\Support\Str;
 
-use function Pest\Laravel\json;
-
 class AuthController extends Controller
 {
     //  use EncTrait;
@@ -249,8 +247,8 @@ class AuthController extends Controller
                 //  $accessToken = $user->createToken('access-token', ['post:read'], now()->addMinutes(15))->plainTextToken;
                 // $refreshToken = $user->createToken('refresh-token', ['refresh'], now()->addDays(7))->plainTextToken;
                 // sem criptagrafia
-                $accessToken = $user->createToken('access-token', ['*'], now()->addMinutes(15))->plainTextToken;
-                $refreshToken = $user->createToken('refresh-token', ['*'], now()->addDays(2))->plainTextToken;
+                $accessToken = $user->createToken('access-token', ['api:access'], now()->addMinutes(15))->plainTextToken;
+                $refreshToken = $user->createToken('refresh-token', ['api:refresh'], now()->addDays(2))->plainTextToken;
 
                 //                $accessToken = $user->createToken('access-token', ['*'], now()->addMinutes(15))->plainTextToken;
                 //                $refreshToken = $user->createToken('refresh-token', ['*'], now()->addDays(7))->plainTextToken;
@@ -308,7 +306,7 @@ class AuthController extends Controller
         $user->tokens()->where('name', 'access-token')->delete();
 
         // Gera um novo access token
-        $newAccessToken = $user->createToken('access-token', ['*'], now()->addMinutes(15))->plainTextToken;
+        $newAccessToken = $user->createToken('access-token', ['api:access'], now()->addMinutes(15))->plainTextToken;
 
         $SECOND = 1;
         $MINUTE = 60 * $SECOND;
