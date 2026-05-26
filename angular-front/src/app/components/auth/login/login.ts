@@ -7,6 +7,7 @@ import { TitleDynamicService } from '../../../services/title-dynamic.service';
 import { NotificationService } from '../../../services/notification.service';
 import { RecaptchaModule, RecaptchaComponent } from 'ng-recaptcha'; 
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment'; // remover recaptcha no local
 
 
 @Component({
@@ -38,11 +39,11 @@ showPassword = false;
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
     ]),
       
-  recaptcha: new FormControl('',
-      Validators.required,
-    )
+recaptcha: new FormControl('', environment.recaptcha ? Validators.required : [])
+
       
   });
+
 
 
   constructor(private http: HttpClient) {
@@ -72,19 +73,19 @@ showPassword = false;
     this.title.set('Identificação'); // titulo da rota.
   }
 
-  onSubmit() {
+onSubmit() {
 
-     // Marca tudo como touched antes de validar
     this.formLogin.markAllAsTouched();
 
-     const token = this.captchaToken();
-    if (!token) {
+    const token = this.captchaToken();
+
+    if (environment.recaptcha && !token) {
       this.notification.error('CAPTCHA inválido, tente novamente.');
       return
     }
 
     if (this.formLogin.invalid) {
-      this.notification.error('Informações incorretas.');
+      this.notification.error('Informações incorretas.')
       return
     }
 
@@ -93,11 +94,12 @@ showPassword = false;
     const dados: LoginDados = {
       login: login ?? '',
       password: password ?? '',
-      recaptcha_token: token
+      recaptcha_token: token ?? ''
     };
 
     this.ApiMaster.onLogin(dados)
-  }
+}
+
 
 togglePassword() {
   this.showPassword = !this.showPassword;

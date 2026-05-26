@@ -35,14 +35,18 @@ class AuthController extends Controller
     {
         $input = $request->all(); // data
 
-        $recaptcha = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('RECAPTCHA_SECRET_KEY'),
-            'response' => $request->recaptcha_token,
-        ])->json();
 
-        if (!($recaptcha['success'] ?? false)) {
-            return response()->json([ 'ok' => false, 'message' => 'Falha na verificação do reCAPTCHA.' ], 422);
+        if (app()->environment('production')) { // APENAS VEIFICA RECAPTCHA SE ESTIVER EM PRODUÇÃO
+            $recaptcha = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => env('RECAPTCHA_SECRET_KEY'),
+                'response' => $request->recaptcha_token,
+            ])->json();
+
+            if (!($recaptcha['success'] ?? false)) {
+                return response()->json([ 'ok' => false, 'message' => 'Falha na verificação do reCAPTCHA.' ], 422);
+            }
         }
+
         // Remover caracteres não numéricos antes de validar
         $input['cpf_cnpj'] = preg_replace('/\D/', '', $input['cpf_cnpj'] ?? '');
         $input['telefone'] = preg_replace('/\D/', '', $input['telefone'] ?? '');
@@ -173,7 +177,7 @@ class AuthController extends Controller
 
 
 
-        if (!($request->internal_login ?? false)) { // se login vier do register não verifico o RECAPTCHA, caso venha da API eu verifico.
+        if (!($request->internal_login ?? false) && app()->environment('production')) { // se login vier do register não verifico o RECAPTCHA, caso venha da API eu verifico. -- EM LOCAL NAO VERIFICO RECAPTCHA
             // valida recaptcha
             $recapchaTokenVerificado = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
                 'secret' => env('RECAPTCHA_SECRET_KEY'),

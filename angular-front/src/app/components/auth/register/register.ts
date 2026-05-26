@@ -7,6 +7,7 @@ import { TitleDynamicService } from '../../../services/title-dynamic.service';
 import { NotificationService } from '../../../services/notification.service';
 import { RecaptchaModule, RecaptchaComponent } from 'ng-recaptcha'; 
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -79,9 +80,10 @@ export class Register implements OnInit {
         Validators.required,
       ]),
     
-      recaptcha: new FormControl('',
-      Validators.required,
+    recaptcha: new FormControl('',
+        environment.recaptcha ? Validators.required : [],
     )
+
   }, {
       validators: this.passwordsIguaisValidator
     });
@@ -214,11 +216,11 @@ constructor(private http: HttpClient) {
     // Marca tudo como touched antes de validar
     this.formRegister.markAllAsTouched();
 
-     const token = this.captchaToken();
-    if (!token) {
+  const token = this.captchaToken();
+  if (environment.recaptcha && !token) {
       this.notification.error('CAPTCHA inválido, tente novamente.');
       return;
-    }
+  }
 
     if (this.formRegister.invalid) {
       this.notification.error('Informações incorretas.');
